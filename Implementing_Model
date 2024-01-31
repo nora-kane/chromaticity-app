@@ -1,0 +1,245 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/nora-kane/chromaticity-app/blob/main/Implementing_Model\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "!pip install anvil-uplink"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 439
+        },
+        "id": "ZPymYbI9SjDa",
+        "outputId": "6baf1597-055d-49d4-8257-46e5c1f91fb1"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Collecting anvil-uplink\n",
+            "  Downloading anvil_uplink-0.4.2-py2.py3-none-any.whl (90 kB)\n",
+            "\u001b[?25l     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m0.0/90.1 kB\u001b[0m \u001b[31m?\u001b[0m eta \u001b[36m-:--:--\u001b[0m\r\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m90.1/90.1 kB\u001b[0m \u001b[31m3.6 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[?25hCollecting argparse (from anvil-uplink)\n",
+            "  Downloading argparse-1.4.0-py2.py3-none-any.whl (23 kB)\n",
+            "Requirement already satisfied: future in /usr/local/lib/python3.10/dist-packages (from anvil-uplink) (0.18.3)\n",
+            "Requirement already satisfied: six in /usr/local/lib/python3.10/dist-packages (from anvil-uplink) (1.16.0)\n",
+            "Collecting ws4py (from anvil-uplink)\n",
+            "  Downloading ws4py-0.5.1.tar.gz (51 kB)\n",
+            "\u001b[2K     \u001b[90m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\u001b[0m \u001b[32m51.4/51.4 kB\u001b[0m \u001b[31m8.2 MB/s\u001b[0m eta \u001b[36m0:00:00\u001b[0m\n",
+            "\u001b[?25h  Preparing metadata (setup.py) ... \u001b[?25l\u001b[?25hdone\n",
+            "Building wheels for collected packages: ws4py\n",
+            "  Building wheel for ws4py (setup.py) ... \u001b[?25l\u001b[?25hdone\n",
+            "  Created wheel for ws4py: filename=ws4py-0.5.1-py3-none-any.whl size=45228 sha256=56d7c7c3eb47aa91b1535f6af9e673a695efdd76f7af731534a0988ae5bbfdd7\n",
+            "  Stored in directory: /root/.cache/pip/wheels/2e/7c/ad/d9c746276bf024d44296340869fcb169f1e5d80fb147351a57\n",
+            "Successfully built ws4py\n",
+            "Installing collected packages: ws4py, argparse, anvil-uplink\n",
+            "Successfully installed anvil-uplink-0.4.2 argparse-1.4.0 ws4py-0.5.1\n"
+          ]
+        },
+        {
+          "output_type": "display_data",
+          "data": {
+            "application/vnd.colab-display-data+json": {
+              "pip_warning": {
+                "packages": [
+                  "argparse",
+                  "google"
+                ]
+              }
+            }
+          },
+          "metadata": {}
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import anvil.server"
+      ],
+      "metadata": {
+        "id": "XfZEJRefSkT_"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "anvil.server.connect('server_XUKRJYA42YDSFPEYZ2IDF7QU-6QKXKRD5XIXTHMV7')"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "-2ZvURSoSl_3",
+        "outputId": "60da0b6e-44fa-45ba-ea97-d644e2b72718"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Disconnecting from previous connection first...\n",
+            "Connecting to wss://anvil.works/uplink\n",
+            "Anvil websocket open\n",
+            "Connected to \"Published\" as SERVER\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from google.colab import drive\n",
+        "drive.mount('/content/drive')"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "3x9Idl5wS1qY",
+        "outputId": "7717fec5-208a-4133-9b33-6591930012ab"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Reconnecting Anvil Uplink...\n",
+            "Mounted at /content/drive\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from tensorflow.keras.models import load_model\n",
+        "\n",
+        "# Load the model\n",
+        "ED = load_model('/content/drive/MyDrive/ED_model.keras')\n",
+        "DNN = load_model('/content/drive/MyDrive/DNN_model.keras')\n"
+      ],
+      "metadata": {
+        "id": "i5unLGP5SxuI"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from PIL import Image\n",
+        "import numpy as np\n",
+        "from io import BytesIO"
+      ],
+      "metadata": {
+        "id": "RbhRDg7NXpwc"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "@anvil.server.callable\n",
+        "def image_to_array(original):\n",
+        "    # Convert the Anvil Image component to a PIL Image object\n",
+        "    pil_image = Image.open(original.source)\n",
+        "\n",
+        "    # Convert the image to grayscale for simplicity\n",
+        "    gray_image = pil_image.convert('L')\n",
+        "\n",
+        "    # Convert the grayscale image to a NumPy array\n",
+        "    numpydataarr = np.asarray(gray_image)\n",
+        "\n",
+        "    # Create a binary mask where 0 represents white and 1 represents non-white\n",
+        "    binary_array = (numpydataarr != 255).astype(int)\n",
+        "\n",
+        "    return binary_array\n"
+      ],
+      "metadata": {
+        "id": "6tm0plJIkZ_6"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "@anvil.server.callable\n",
+        "def predict_chromaticity(tune, intensity, fft):\n",
+        "  encoded_fft = ED.predict(image_to_array(fft))\n",
+        "  combined_tune_intensity_data = np.column_stack((tune, intensity))\n",
+        "  return DNN.predict([encoded_fft, combined_tune_intensity_data])"
+      ],
+      "metadata": {
+        "id": "Z-SEnqHDSr2I"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "anvil.server.wait_forever()"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 259
+        },
+        "id": "P53MrxR4SwHW",
+        "outputId": "7b9d3d3c-7072-47d2-b0fc-f4fb96a21092"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "error",
+          "ename": "KeyboardInterrupt",
+          "evalue": "",
+          "traceback": [
+            "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+            "\u001b[0;31mKeyboardInterrupt\u001b[0m                         Traceback (most recent call last)",
+            "\u001b[0;32m<ipython-input-36-95cac3476493>\u001b[0m in \u001b[0;36m<cell line: 1>\u001b[0;34m()\u001b[0m\n\u001b[0;32m----> 1\u001b[0;31m \u001b[0manvil\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mserver\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mwait_forever\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+            "\u001b[0;32m/usr/local/lib/python3.10/dist-packages/anvil/server.py\u001b[0m in \u001b[0;36mwait_forever\u001b[0;34m()\u001b[0m\n\u001b[1;32m    435\u001b[0m     \u001b[0m_get_connection\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    436\u001b[0m     \u001b[0;32mwhile\u001b[0m \u001b[0;32mTrue\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 437\u001b[0;31m         \u001b[0mtime\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0msleep\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;36m1\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+            "\u001b[0;31mKeyboardInterrupt\u001b[0m: "
+          ]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "accelerator": "GPU",
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyMy/atDf4cJ9+uWGvL0aFL/",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "display_name": "Python 3",
+      "name": "python3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 0
+}
